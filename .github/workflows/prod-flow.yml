@@ -3,14 +3,16 @@ name: Release to prod
 on:
   workflow_dispatch:
     inputs:
-      release_version:
-        description: 'Enter release version'
-        required: true
-         
+        release_version:
+          description: 'Enter release version to fix'
+          required: true
+        issue_number:
+          description: "Enter issue number id"
+          required: true         
 
 jobs:
           
-  run_image:
+  run_release_to_prod:
     runs-on: ubuntu-latest
     steps:      
     - name: SSH login and deploy to prod
@@ -21,14 +23,10 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         passphrase: ${{ secrets.SSH_PASSWORD }}
         script: |
-          echo "Logging in to Yandex Container Registry"
             echo "${{ secrets.YC_TOKEN }}" | docker login --username oauth --password-stdin cr.yandex
-            echo "Pulling the latest Docker image"
             docker pull cr.yandex/${{ secrets.CR_ID }}/app:${{ github.event.inputs.release_version }}_latest
-            echo "Stopping and removing old container"
             docker kill $(docker ps -q)
             docker rm $(docker ps -a -q)
-            echo "Running the new Docker image"
             docker run -d -p 3000:3000 cr.yandex/${{ secrets.CR_ID }}/app:${{ github.event.inputs.release_version }}_latest
   
     
