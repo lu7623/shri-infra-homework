@@ -81,5 +81,5 @@ jobs:
 
              - *Version*  ${{ github.event.inputs.release_version }}_fix${{ github.run_number }}
 
-             - *Docker image* cr.yandex/${{ secrets.CR_ID }}/app:${{ github.event.inputs.release_version }}_fix${{ github.run_number }})
+             - *Docker image* cr.yandex/${{ secrets.CR_ID }}/app:${{ github.event.inputs.release_version }}_fix${{ github.run_number }}
            
