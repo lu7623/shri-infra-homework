@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test_and_lint_check:
+  test_check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -12,11 +12,18 @@ jobs:
         run: |
           npm install 
           npm run test 
-          npm run lint    
+  lint_check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Run tests and lint
+        run: |
+          npm install  
+          npm run lint            
 
   build_and_push_image:
     runs-on: ubuntu-latest
-    needs: test_and_lint_check
+    needs: [test_check,lint_check]
 
     steps:
       - uses: actions/checkout@v4
@@ -36,7 +43,7 @@ jobs:
     
   create_release_branch:
     runs-on: ubuntu-latest
-    needs: test_and_lint_check
+    needs: [test_check,lint_check]
     steps:
       - uses: actions/checkout@v3
       - name: Create release branch
@@ -71,6 +78,9 @@ jobs:
              Release ${{ github.run_number }} created.
 
              - *Date* ${{ env.CURRENT_DATE }}
+
              - *Author* ${{ github.actor }}
+
              - *Version* ${{ github.run_number }}
+
              - *Docker image* cr.yandex/${{ secrets.CR_ID }}/app:${{ github.run_number }}_latest
