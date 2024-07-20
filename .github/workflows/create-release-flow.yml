@@ -20,19 +20,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Install Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20.14.0'
-      - run: npm install
-      - run: npm run build
-      - name: Build image
-        run: docker build . -t shri-infra:latest
+      - name: Build Docker Image
+        run: |
+          npm install
+          npm run build
+          npm run build:docker
       - name: Login to Yandex Container Registry
-        run: echo gh secret set SECRET_NAME"${{ secrets.YC_TOKEN }}" | docker login --username oauth --password-stdin cr.yandex
+        run: echo "${{ secrets.YC_TOKEN }}" | docker login --username oauth --password-stdin cr.yandex
       - name: Tag and push images
         run: |
           docker tag shri-infra:latest cr.yandex/${{ secrets.CR_ID }}/app:${{ github.run_number }}
-          docker tag shri-infra:latest cr.yandex/${{ secrets.CR_ID }}/app_latest:${{ github.run_number }}
+          docker tag shri-infra:latest cr.yandex/${{ secrets.CR_ID }}/app:${{ github.run_number }}_latest
           docker push cr.yandex/${{ secrets.CR_ID }}/app:${{ github.run_number }}
-          docker push cr.yandex/${{ secrets.CR_ID }}/app_latest:${{ github.run_number }}
+          docker push cr.yandex/${{ secrets.CR_ID }}/app:${{ github.run_number }}_latest
