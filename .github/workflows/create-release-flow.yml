@@ -49,7 +49,10 @@ jobs:
     needs: create_release_branch
     steps:
       - uses: actions/checkout@v3
+        with: ${{secrets.GITHUB_TOKEN}}
       - name: Push tag
         run: |
+         git config --global user.email "lu7623@gmail.com"
+         git config --global user.name "Lu"
          git tag -a v${{ github.run_number }} -m "Release ${{ github.run_number }}"
          git push origin --tags
