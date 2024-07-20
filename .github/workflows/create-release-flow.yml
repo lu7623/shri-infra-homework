@@ -68,10 +68,9 @@ jobs:
           token: ${{ github.token }}
           title: Release ${{github.run_number}}
           body: 
-            ### Release ${{ github.run_number }} created.
+             Release ${{ github.run_number }} created.
 
-             -*Date* ${{ env.CURRENT_DATE }}
-             -*Author* ${{ github.actor }}
-             -*Version* ${{ github.run_number }}
-             -*Docker image* http://cr.yandex/${{ secrets.CR_ID }}/app:${{ github.run_number }}_latest
-    
+             - *Date* ${{ env.CURRENT_DATE }}
+             - *Author* ${{ github.actor }}
+             - *Version* ${{ github.run_number }}
+             - *Docker image* cr.yandex/${{ secrets.CR_ID }}/app:${{ github.run_number }}_latest
