@@ -6,7 +6,10 @@ on:
       release_version:
         description: 'Enter release version to fix'
         required: true
-
+      issue_number:
+        description: "Enter issue number id"
+        required: true
+         
 
 jobs:
   test_check:
@@ -65,13 +68,11 @@ jobs:
     steps:
       - name: Set current date 
         run: echo "DATE=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
-      - name: Add comment to issue
-        run: |
-          issue_number=$(gh issue list --label release-${{ github.event.inputs.release_version }} --json number --jq '.[0].number')
-          gh issue comment "$issue_number" --body "$BODY"
-        env:
-          GH_TOKEN:  ${{ github.token }}
-          BODY: |
+      - name: Create comment
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ github.event.inputs.issue_number }}
+          body: |
              Fix release ${{ github.event.inputs.release_version }}_fix${{ github.run_number }} created.
 
              - *Date* ${{ env.DATE }}
