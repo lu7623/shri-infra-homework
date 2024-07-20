@@ -13,10 +13,9 @@ jobs:
   check_image:
     runs-on: ubuntu-latest
     steps:
-      - name: Log in to Yandex Container Registry
-        run: echo "${{ secrets.YCR_TOKEN }}" | docker login --username oauth --password-stdin cr.yandex
       - name: Check an image 
         run: |
+          echo "${{ secrets.YC_TOKEN }}" | docker login --username oauth --password-stdin cr.yandex
           if ! docker manifest inspect cr.yandex/crpk6ta1ej2mrcheq6qs/app:${{ github.event.inputs.release_version }}_latest; then
             echo "Image not found!" && exit 1
           
