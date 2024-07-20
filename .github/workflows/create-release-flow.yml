@@ -20,7 +20,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Build Docker Image
+      - name: Build Docker image
         run: |
           npm install
           npm run build
@@ -33,3 +33,13 @@ jobs:
           docker tag shri-infra:latest cr.yandex/${{ secrets.CR_ID }}/app:${{ github.run_number }}_latest
           docker push cr.yandex/${{ secrets.CR_ID }}/app:${{ github.run_number }}
           docker push cr.yandex/${{ secrets.CR_ID }}/app:${{ github.run_number }}_latest
+    
+  create_release_branch:
+    runs-on: ubuntu-latest
+    needs: test_lint
+    steps:
+      - uses: actions/checkout@v3
+      - name: Create release branch
+        run: |
+          git checkout -b release/${{ github.run_number }}
+          git push origin release/${{ github.run_number }}
