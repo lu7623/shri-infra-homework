@@ -10,16 +10,22 @@ on:
           description: "Enter issue number id"
           required: true         
 
+permissions:
+  contents: read
+  issues: write
+
 jobs:
   
   check_release: 
     runs-on: ubuntu-latest
     steps:   
+      - uses: actions/checkout@v4  
       - name: Login to Yandex Container Registry
         run: echo "${{ secrets.YC_TOKEN }}" | docker login --username oauth --password-stdin cr.yandex
       - name: check images
         run: |
-          docker images
+          docker image list
+
           
 
   run_release_to_prod:
