@@ -10,7 +10,6 @@ on:
         description: "Enter issue number id"
         required: true
          
-
 jobs:
   test_check:
     runs-on: ubuntu-latest
