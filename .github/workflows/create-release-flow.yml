@@ -90,15 +90,12 @@ jobs:
 
   changelog:
       runs-on: ubuntu-latest  
-      needs: create_release_tag
+      needs:   create_release_branch
       steps:     
-        - uses: actions/checkout@v2       
-          with:
-              fetch-depth: 0  
+        - uses: actions/checkout@v4       
         - name: Checkout releases branch
-          uses: actions/checkout@v4
-          with:
-                ref: releases/${{ github.run_number }}      
+          run: |
+            git checkout release/${{ github.run_number }}     
 
         - name: Download and Install git-cliff
           run: |  
