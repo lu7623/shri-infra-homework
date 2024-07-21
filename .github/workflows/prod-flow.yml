@@ -14,16 +14,17 @@ jobs:
   
   check_release: 
     runs-on: ubuntu-latest
-    steps: 
-      - name: Check if image exists
-        run: |   
-          echo "${{ secrets.YC_TOKEN }}" | docker login --username oauth --password-stdin cr.yandex
+    steps:   
+      - name: Login to Yandex Container Registry
+        run: echo "${{ secrets.YC_TOKEN }}" | docker login --username oauth --password-stdin cr.yandex
+      - name: check images
+        run: |
           docker images
-          docker manifest inspect cr.yandex/crpk6ta1ej2mrcheq6qs/app:${{ github.event.inputs.release_version }}_latest
           
 
   run_release_to_prod:
     runs-on: ubuntu-latest
+    needs: check_release
     steps:      
     - name: SSH login and check image and deploy to prod
       uses: appleboy/ssh-action@master
