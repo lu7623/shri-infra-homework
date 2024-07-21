@@ -101,7 +101,7 @@ jobs:
         with:
           config: cliff.toml
           args: --verbose
-          env:
+        env:
           OUTPUT: CHANGELOG.md
           GITHUB_REPO: ${{ github.repository }}
                       
