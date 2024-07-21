@@ -11,25 +11,20 @@ jobs:
     create_issue:
         runs-on: ubuntu-latest
         steps:
-          - uses: actions/checkout@v4  
-          - name: Get today's date
-            id: date
-            run: |
-             echo "DATE=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
-    
-          - name: Create an issue
-            uses: actions-ecosystem/action-create-issue@v1
-            with:
-              github_token: ${{ secrets.github_token }}
-              title: "Release # ${{ github.run_number }}"
-              body: |
-                "Release ${{ github.run_number }} created.
+                  - name: Set current date 
+                    run: echo "DATE=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
+                  - name: Create an issue
+                    uses: dacbd/create-issue-action@main
+                    with:
+                      token: ${{ github.token }}
+                      title: Release ${{github.run_number}}
+                      body: |
+                          Release ${{ github.run_number }} created.
+            
+                          - *Date*: ${{ env.DATE }}
 
-                - *Date*: ${{ env.DATE }}
+                          - *Author*: ${{ github.actor }}
 
-                - *Author*: ${{ github.actor }}
+                          - *Version*: ${{ github.run_number }}
 
-                - *Version*: ${{ github.run_number }}
-
-                - *Docker image*: cr.yandex/${{ secrets.CR_ID }}/app:${{ github.run_number }}_latest"
-  
+                          - *Docker image*: cr.yandex/${{ secrets.CR_ID }}/app:${{ github.run_number }}_latest
