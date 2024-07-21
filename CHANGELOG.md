@@ -2,7 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
-## [unreleased]
+## [24] - 2024-07-21
+
+### 🚜 Refactor
+
+- Refactor workflows
+
+## [23_fix2] - 2024-07-21
+
+### 🚀 Features
+
+- Add changelog to release fix
+
+## [23] - 2024-07-21
 
 ### 🚀 Features
 
