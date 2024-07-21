@@ -86,7 +86,7 @@ jobs:
              - *Docker image*: cr.yandex/${{ secrets.CR_ID }}/app:${{ github.event.inputs.release_version }}_fix${{ github.run_number }}
             
   changelog:
-    name: Generate changelog
+    name: generate_changelog
     needs: [create_fix_issue_comment, create_fix_release_tag]
     runs-on: ubuntu-latest
     steps:

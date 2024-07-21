@@ -92,7 +92,7 @@ jobs:
               - *Docker image* cr.yandex/${{ secrets.CR_ID }}/app:${{ github.run_number }}_latest
               
   changelog:
-    name: Generate changelog
+    name: generate_changelog
     needs: [create_issue, create_release_tag, create_release_branch]
     runs-on: ubuntu-latest
     steps:
