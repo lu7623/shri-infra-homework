@@ -21,12 +21,10 @@ jobs:
     steps:   
       - uses: actions/checkout@v4  
       - name: Login to Yandex Container Registry
-        run: echo "${{ secrets.YC_TOKEN }}" | docker login --username oauth --password-stdin cr.yandex
-      - name: check images
         run: |
-          docker image list
-
-          
+           LIST=$(curl --header "Authorization: Bearer ${{ secrets.IAM_TOKEN }}" --request GET https://container-registry.api.cloud.yandex.net/container-registry/v1/images?registryId=${{ secrets.CR_ID }})
+           IMAGE=$(echo "$LIST" | grep "14_fix3" | wc -l)
+           test $IMAGE = 1
 
   run_release_to_prod:
     runs-on: ubuntu-latest
