@@ -68,7 +68,7 @@ jobs:
               git config --global user.name "Lu"
               git add CHANGELOG.md
               git commit -m "docs: Update CHANGELOG"
-              git push 
+            
         
 
   create_release_tag:
@@ -91,12 +91,15 @@ jobs:
       - name: Set current date 
         run: echo "DATE=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
       - name: Create an issue
-        uses: dacbd/create-issue-action@main
-        with:
-          token: ${{ github.token }}
-          title: Release ${{github.run_number}}
-          body: 
-             Release ${{ github.run_number }} created.
+        run: |
+          gh issue create \
+            --title "$TITLE" \
+            --body "$BODY" \
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TITLE: "Release # ${{ github.run_number }}"
+          BODY: |
+           Release ${{ github.run_number }} created.
 
              - *Date* ${{ env.DATE }}
 
@@ -106,5 +109,3 @@ jobs:
 
              - *Docker image* cr.yandex/${{ secrets.CR_ID }}/app:${{ github.run_number }}_latest
 
-
- 
