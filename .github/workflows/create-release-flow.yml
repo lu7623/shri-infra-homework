@@ -3,6 +3,10 @@ name: Create Release
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+  issues: write    
+
 jobs:
   test_and_lint_check:
     runs-on: ubuntu-latest
