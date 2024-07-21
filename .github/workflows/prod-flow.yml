@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
         release_version:
-          description: 'Enter release version to fix'
+          description: 'Enter release version to deploy'
           required: true
         issue_number:
           description: "Enter issue number id"
@@ -19,7 +19,7 @@ jobs:
         run: echo "${{ secrets.YC_TOKEN }}" | docker login --username oauth --password-stdin cr.yandex
       - name: Check if image exists
         run: |   
-          IMAGE=$(docker images | grep cr.yandex/${{ secrets.CR_ID }}/app:${{ github.event.inputs.release_version }}_latest | wc -l)
+          IMAGE=$(docker images | grep ${{ secrets.CR_ID }}/app:${{ github.event.inputs.release_version }}_latest | wc -l)
           test IMAGE = 1
           
 
