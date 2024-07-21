@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [25_fix4] - 2024-07-21
+
+### 📚 Documentation
+
+- Update changelog
+
 ## [25] - 2024-07-21
 
 ### 🚜 Refactor
