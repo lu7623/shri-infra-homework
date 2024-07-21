@@ -47,7 +47,7 @@ jobs:
             docker rm $(docker ps -a -q)
             docker run -d -p 3000:3000 cr.yandex/${{ secrets.CR_ID }}/app:${{ github.event.inputs.release_version }}_latest
   
-  create_fix_issue_comment: 
+  create_comment: 
     runs-on: ubuntu-latest
     needs: run_release_to_prod
     steps:
