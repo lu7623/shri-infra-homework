@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file.
 
+## [25_fix4] - 2024-07-21
+
+### 📚 Documentation
+
+- Update changelog
+
+## [25] - 2024-07-21
+
+### 🚜 Refactor
+
+- Refactor flows
+
+## [24_fix4] - 2024-07-21
+
+### 🧪 Testing
+
+- Test fix flow
+
+## [24_fix3] - 2024-07-21
+
+### 🚜 Refactor
+
+- Delete unnecessary files
+
+### 📚 Documentation
+
+- Update changelog
+
 ## [24] - 2024-07-21
 
 ### 🚜 Refactor
