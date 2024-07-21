@@ -3,7 +3,7 @@ name: Create Fix Release
 permissions:
   contents: write
   issues: write  
-  
+
 on:
   workflow_dispatch:
     inputs:
@@ -77,11 +77,39 @@ jobs:
           body: |
              Fix release ${{ github.event.inputs.release_version }}_fix${{ github.run_number }} created.
 
-             - *Date* ${{ env.DATE }}
+             - *Date*: ${{ env.DATE }}
 
-             - *Fix author* ${{ github.actor }}
+             - *Fix author*: ${{ github.actor }}
 
-             - *Version*  ${{ github.event.inputs.release_version }}_fix${{ github.run_number }}
+             - *Version*:  ${{ github.event.inputs.release_version }}_fix${{ github.run_number }}
 
-             - *Docker image* cr.yandex/${{ secrets.CR_ID }}/app:${{ github.event.inputs.release_version }}_fix${{ github.run_number }}
-           
+             - *Docker image*: cr.yandex/${{ secrets.CR_ID }}/app:${{ github.event.inputs.release_version }}_fix${{ github.run_number }}
+            
+  changelog:
+    name: Generate changelog
+    needs: create_fix_issue_comment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GH_PAT }} 
+                      
+      - name: Generate a changelog
+        uses: orhun/git-cliff-action@v3
+        with:
+          config: cliff.toml
+          args: --verbose
+          env:
+          OUTPUT: CHANGELOG.md
+          GITHUB_REPO: ${{ github.repository }}
+                      
+      - name: Commit
+        run: |
+            git config user.name 'github-actions[bot]'
+            git config user.email 'github-actions[bot]@users.noreply.github.com'
+            set +e
+            git add CHANGELOG.md
+            git commit -m "Update changelog"
+            git push --force https://${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git main

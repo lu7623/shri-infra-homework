@@ -93,6 +93,7 @@ jobs:
               
   changelog:
     name: Generate changelog
+    needs: create_issue
     runs-on: ubuntu-latest
     steps:
        - name: Checkout
