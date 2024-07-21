@@ -12,7 +12,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
+      - name: Create release branch
+        run: |
+            git checkout -b test/${{ github.run_number }}
+            git push origin test/${{ github.run_number }}
 
       - name: Download and Install git-cliff
         run: |
@@ -29,4 +33,4 @@ jobs:
           git config --global user.name "Lu"
           git add CHANGELOG.md
           git commit -m "docs: Update CHANGELOG"
-          git push origin release/20
+          git push origin  test/${{ github.run_number }}
