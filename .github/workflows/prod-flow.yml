@@ -19,6 +19,7 @@ jobs:
         run: echo "${{ secrets.YC_TOKEN }}" | docker login --username oauth --password-stdin cr.yandex
       - name: Check if image exists
         run: |   
+          echo docker images
           IMAGE=$(docker images | grep ${{ secrets.CR_ID }}/app:${{ github.event.inputs.release_version }}_latest | wc -l)
           test IMAGE = 1
           
