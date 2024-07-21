@@ -30,4 +30,4 @@ jobs:
           git checkout release/20
           git add CHANGELOG.md
           git commit -m "docs: Update CHANGELOG"
-          git push origin release/20
+          git push 
