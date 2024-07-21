@@ -9,25 +9,28 @@ permissions:
 
 jobs:
   changelog:
+    name: Generate changelog
     runs-on: ubuntu-latest
     steps:
-      
-      - uses: actions/checkout@v3
-      - name: Download and Install git-cliff
-        run: |
-          curl -L "https://github.com/orhun/git-cliff/releases/download/v2.2.1/git-cliff-2.2.1-x86_64-unknown-linux-gnu.tar.gz" -o git-cliff.tar.gz  
-          tar -xzf git-cliff.tar.gz  
-          mv git-cliff-2.2.1/git-cliff /usr/local/bin/
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Generate Changelog
-        run: git cliff --config detailed --output CHANGELOG.md
+      - name: Generate a changelog
+        uses: orhun/git-cliff-action@v3
+        with:
+          config: cliff.toml
+          args: --verbose
+        env:
+          OUTPUT: CHANGELOG.md
+          GITHUB_REPO: ${{ github.repository }}
 
-      - name: Commit Changelog
+      - name: Commit
         run: |
-          git checkout -b test/${{ github.run_number }}
-          git push origin test/${{ github.run_number }}
-          git config --global user.email "lu7623@gmail.com"
-          git config --global user.name "Lu"
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          set +e
           git add CHANGELOG.md
-          git commit -m "docs: Update CHANGELOG"
-          git push origin  test/${{ github.run_number }}
+          git commit -m "Update changelog"
+          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git test/12
