@@ -90,10 +90,15 @@ jobs:
 
   changelog:
       runs-on: ubuntu-latest  
+      needs: create_release_tag
       steps:     
         - uses: actions/checkout@v2       
           with:
               fetch-depth: 0  
+        - name: Checkout releases branch
+          uses: actions/checkout@v4
+          with:
+                ref: releases/${{ github.run_number }}      
 
         - name: Download and Install git-cliff
           run: |  
@@ -111,4 +116,4 @@ jobs:
               git config --global user.name "Lu"
               git add CHANGELOG.md
               git commit -m "docs: Update CHANGELOG"
-              git push https://github.com/${{ github.repository }}.git HEAD:main  
+              git push https://github.com/${{ github.repository }}.git
