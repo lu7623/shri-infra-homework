@@ -20,10 +20,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:   
       - uses: actions/checkout@v4  
-      - name: Login to Yandex Container Registry
+      - name: Login to YCR and check release image
         run: |
            LIST=$(curl --header "Authorization: Bearer ${{ secrets.IAM_TOKEN }}" --request GET https://container-registry.api.cloud.yandex.net/container-registry/v1/images?registryId=${{ secrets.CR_ID }})
-           IMAGE=$(echo "$LIST" | grep "14_fix3" | wc -l)
+           echo $LIST
+           IMAGE=$(echo "$LIST" | grep "${{ github.event.inputs.release_version }}_latest" | wc -l)
+           echo $IMAGE
            test $IMAGE = 1
 
   run_release_to_prod:

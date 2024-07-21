@@ -25,7 +25,7 @@ jobs:
           mv git-cliff-2.2.1/git-cliff /usr/local/bin/
 
       - name: Generate Changelog
-        run: git-cliff --config cliff.toml --output CHANGELOG.md
+        run: git cliff --config detailed --output CHANGELOG.md
 
       - name: Commit Changelog
         run: |
