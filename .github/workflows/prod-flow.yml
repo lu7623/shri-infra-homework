@@ -15,10 +15,9 @@ jobs:
   check_release: 
     runs-on: ubuntu-latest
     steps: 
-      - name: Login to Yandex Container Registry
-        run: echo "${{ secrets.YC_TOKEN }}" | docker login --username oauth --password-stdin cr.yandex
       - name: Check if image exists
         run: |   
+          echo "${{ secrets.YC_TOKEN }}" | docker login --username oauth --password-stdin cr.yandex
           docker images
           IMAGE=$(docker images | grep ${{ github.event.inputs.release_version }}_latest | wc -l)
           test IMAGE = 1
