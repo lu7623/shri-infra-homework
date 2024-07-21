@@ -93,7 +93,7 @@ jobs:
               
   changelog:
     name: Generate changelog
-    needs: create_issue
+    needs: [create_issue, create_release_tag, create_release_branch]
     runs-on: ubuntu-latest
     steps:
        - name: Checkout
@@ -117,5 +117,5 @@ jobs:
             git config user.email 'github-actions[bot]@users.noreply.github.com'
             set +e
             git add CHANGELOG.md
-            git commit -m "Update changelog"
+            git commit -m "docs: Update changelog"
             git push --force https://${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git main
